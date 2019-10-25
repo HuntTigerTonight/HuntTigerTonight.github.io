@@ -1,15 +1,49 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=X-UA-Compatible content="IE=edge"><title>湖南省胸痛数据填报平台</title><link rel="shortcut icon" type=image/x-icon href=./static/favicon.ico rel="external nofollow"><!--[if lt IE 10]>
-  <style type="text/css">
-  .lowie{position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 999;}
-  .lowie .con{position: absolute; width: 500px; height: 300px; top: 50%; left: 50%; margin-left: -200px; margin-top: -100px;text-align: center; background: #fff;}
-  .lowie h2{margin: 60px 0 20px;}
-  .lowie a{font-size: 23px; color: #00f;}
-  .lowie a:hover{color: #f00;}
-  </style>
-  <div class="lowie">
-      <div class="con">
-          <h2>您的浏览器版本过低，为了更好的浏览体验，建议您升级浏览器</h2>
-          <a href="http://browsehappy.osfipin.com/" target="_blank">去升级</a>
-      </div>
-  </div>
-  <![endif]--><link href=./static/css/app.aa81259a683a133f1f65d6d87262d644.css?c6d628fbff1f8912c147 rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.97153e174b7fc1c0e0d9.js?c6d628fbff1f8912c147></script><script type=text/javascript src=./static/js/vendor.2d763d7ace1657475236.js?c6d628fbff1f8912c147></script><script type=text/javascript src=./static/js/app.464be1df804f4efd393d.js?c6d628fbff1f8912c147></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">登录</button>
+    <script src="https://github.com/github/fetch/blob/master/fetch.js"></script>
+    <script>
+        window.onload = function () {
+            var btn = document.getElementById('btn')
+            function checkStatus(response) {
+                if (response.status >= 200 && response.status < 300) {
+                    return response
+                } else {
+                    var error = new Error(response.statusText)
+                    error.response = response
+                    throw error
+                }
+            }
+
+            function parseJSON(response) {
+                return response.json()
+            }
+            btn.onclick = function () {
+                fetch('http://47.99.41.150:8080/meliora-sjsb/login?username=cpcms&password=96e79218965eb72c92a549dd5a330112', {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(checkStatus)
+                    .then(parseJSON)
+                    .then(function (res) {
+                        alert(res.success)
+                    }).catch(function (err) {
+                        console.log(err)
+                    })
+            }
+        }
+    </script>
+</body>
+
+</html>
