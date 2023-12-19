@@ -99,7 +99,12 @@ const b = deepClone(jjj)
 
 console.log(b === jjj)
 
-/**防抖 */
+/**
+ * 防抖
+ * @param {Function} fn 
+ * @param {number} delay 
+ * @returns 
+ */
 function debounce(fn, delay) {
     let timer = null;
     return function () {
@@ -112,7 +117,12 @@ function debounce(fn, delay) {
     }
 }
 
-/**节流 */
+/**
+ * 节流
+ * @param {Function} fn 
+ * @param {number} delay 
+ * @returns 
+ */
 function throttle(fn, delay) {
     let timer = null;
     return function () {
