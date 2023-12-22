@@ -83,7 +83,7 @@ console.log(quickSort(arr))
 console.log(arr)
 
 
-/**深浅拷贝 */
+/**深拷贝 */
 
 const jjj = [{info: {name: '1', age: 18, work: {f: '1', s: 2}}}]
 
@@ -93,6 +93,19 @@ function deepClone(obj) {
         port1.postMessage(obj);
         port2.onmessage = e => resolve(e.data);
     })
+}
+
+function deep_clone(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+    let cloneObj = Array.isArray(obj) ? [] : {}
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            cloneObj[key] = deep_clone(obj[key])
+        }
+    }
+    return cloneObj
 }
 
 const b = deepClone(jjj)
