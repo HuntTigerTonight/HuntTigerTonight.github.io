@@ -85,11 +85,11 @@ console.log(arr)
 
 /**深拷贝 */
 
-const jjj = [{info: {name: '1', age: 18, work: {f: '1', s: 2}}}]
+const jjj = [{ info: { name: '1', age: 18, work: { f: '1', s: 2 } } }]
 
 function deepClone(obj) {
     return new Promise(resolve => {
-        const {port1, port2} = new MessageChannel();
+        const { port1, port2 } = new MessageChannel();
         port1.postMessage(obj);
         port2.onmessage = e => resolve(e.data);
     })
@@ -118,14 +118,13 @@ console.log(b === jjj)
  * @param {number} delay 
  * @returns 
  */
-function debounce(fn, delay) {
+function debounce(fn, delay = 500) {
     let timer = null;
     return function () {
-        let context = this;
-        let args = arguments;
-        clearTimeout(timer);
+        timer && clearTimeout(timer);
         timer = setTimeout(() => {
-            fn.apply(context, args)
+            fn.apply(this, arguments)
+            timer = null
         }, delay)
     }
 }
@@ -139,13 +138,52 @@ function debounce(fn, delay) {
 function throttle(fn, delay) {
     let timer = null;
     return function () {
-        let context = this;
-        let args = arguments;
-        if (!timer) {
-            timer = setTimeout(() => {
-                fn.apply(context, args)
-                timer = null;
-            }, delay)
+        if (timer) {
+            return
         }
+        timer = setTimeout(() => {
+            fn.apply(this, arguments)
+            timer = null;
+        }, delay)
     }
 }
+
+/**手写bind、call、apply */
+Function.prototype.myBind = function (context) {
+    const _this = this
+    // let args = Array.prototype.slice.call(arguments, 1);
+    let args = [...arguments].slice(1)
+    return function () {
+        _this.apply(context, args)
+    }
+}
+
+Function.prototype.myCall = function (context) {
+    context.fn = this
+    const args = [...arguments].slice(1)
+    const res = context.fn(...args)
+    delete context.fn
+    return res
+}
+
+Function.prototype.myApply = function (context) {
+    context.fn = this
+    const args = [...arguments][1]
+    const res = context.fn(...args)
+    delete context.fn
+    return res
+}
+
+const obj = {
+    name: 1,
+    age: 2
+}
+
+function fn(a, b, c) {
+    console.log(this)
+    console.log(a)
+    console.log(b)
+    console.log(c)
+}
+
+fn.myApply(obj, [1, 2, 3])
